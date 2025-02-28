@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Class, Subject, Faculty, Weekday
 from .solver import TimetableSolver
 import json
 
@@ -42,9 +43,14 @@ def generate(request):
 
         return render(request, 'generate.html', {'timetable': timetable, 'time_slots': time_slots})
 
-    return render(request, 'generate.html')
+    sections = Class.objects.all()
+    courses = Subject.objects.all()
+    professors = Faculty.objects.all()
+    days = Weekday.objects.all()
 
-
-# {"A": ["Maths", "Physics", "Chemistry", "FSD"],"B": ["Maths", "DMW", "Chemistry", "Sanskrit"],"C": ["Sports", "Physics", "Biology", "Hindi"],"D": ["Maths", "DL", "Chemistry", "Sanskrit"]}
-# {"Maths": "Prof A","Physics": "Prof B","Chemistry": "Prof C","FSD": "Prof D","DMW": "Prof E","Sports": "Prof A","DL": "Prof B","Biology": "Prof C","Sanskrit": "Prof D","Hindi": "Prof E"}
-# {"Maths": 5,"Physics": 5,"Chemistry": 5,"FSD": 5,"DMW": 5,"Sports": 3,"DL": 5,"Biology": 5,"Sanskrit": 5,"Hindi": 7}
+    return render(request, 'generate.html', {
+        'sections': sections,
+        'courses': courses,
+        'professors': professors,
+        'days': days
+    })

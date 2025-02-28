@@ -11,20 +11,32 @@ Generate
         
         <div class="row mb-3">
             <div class="col-md-6 border-end">
-                <label for="sections">Sections:</label>
+                <label for="sections">Classes:</label>
                 <div id="sections">
                     <div class="input-group mb-2">
-                        <input type="text" class="form-control" name="section_name" placeholder="Section Name" required>
+                        <select class="form-control" name="section_name" required>
+                            {% for section in sections %}
+                                <option value="{{ section.name }}">{{ section.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
-                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addSection()">Add Section</button>
+                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addSection()">Add Class</button>
             </div>
             <div class="col-md-6">
-                <label for="courses">Courses:</label>
+                <label for="courses">Course-Section Mapping:</label>
                 <div id="courses">
                     <div class="input-group mb-2">
-                        <input type="text" class="form-control" name="course_name" placeholder="Course Name" required>
-                        <input type="text" class="form-control" name="course_section" placeholder="Section" required>
+                        <select class="form-control" name="course_name" required>
+                            {% for course in courses %}
+                                <option value="{{ course.name }}">{{ course.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select class="form-control" name="course_section" required>
+                            {% for section in sections %}
+                                <option value="{{ section.name }}">{{ section.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
                 <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addCourse()">Add Course</button>
@@ -35,24 +47,35 @@ Generate
 
         <div class="row mb-3">
             <div class="col-md-6 border-end">
-                <label for="professors">Professors:</label>
+                <label for="professors">Course - Professor:</label>
                 <div id="professors">
                     <div class="input-group mb-2">
-                        <input type="text" class="form-control" name="professor_course" placeholder="Course" required>
-                        <input type="text" class="form-control" name="professor_name" placeholder="Professor Name" required>
+                        <select class="form-control" name="professor_course" required>
+                            {% for course in courses %}
+                                <option value="{{ course.name }}">{{ course.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select class="form-control" name="professor_name" required>
+                            {% for professor in professors %}
+                                <option value="{{ professor.name }}">{{ professor.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
                 <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addProfessor()">Add Professor</button>
             </div>
             <div class="col-md-6">
-                <label for="course_time_requirements">Course Time Requirements:</label>
-                <div id="course_time_requirements">
+                <label for="days">Weekdays:</label>
+                <div id="days">
                     <div class="input-group mb-2">
-                        <input type="text" class="form-control" name="time_course" placeholder="Course" required>
-                        <input type="number" class="form-control" name="time_requirement" placeholder="Time Requirement" required>
+                        <select class="form-control" name="day_name" required>
+                            {% for day in days %}
+                                <option value="{{ day.name }}">{{ day.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
-                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addTimeRequirement()">Add Time Requirement</button>
+                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addDay()">Add Day</button>
             </div>
         </div>
 
@@ -60,15 +83,6 @@ Generate
 
         <div class="row mb-3">
             <div class="col-md-6 border-end">
-                <label for="days">Days:</label>
-                <div id="days">
-                    <div class="input-group mb-2">
-                        <input type="text" class="form-control" name="day_name" placeholder="Day" required>
-                    </div>
-                </div>
-                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addDay()">Add Day</button>
-            </div>
-            <div class="col-md-6">
                 <label for="time_slots">Time Slots:</label>
                 <div id="time_slots">
                     <div class="input-group mb-2">
@@ -79,13 +93,7 @@ Generate
             </div>
         </div>
 
-        <hr class="my-4" style='border-width: 5px'> <!-- Separator -->
-
-        <div class="row">
-            <div class="col-md-6">
-                <button style='margin-top: 10px' type="submit" class="btn btn-success">Generate Timetable</button>
-            </div>
-        </div>
+        <button type="submit" class="btn btn-success">Generate Timetable</button>
     </form>
 </div>
 
@@ -129,13 +137,13 @@ function addSection() {
 function addCourse() {
     var div = document.createElement('div');
     div.className = 'input-group mb-2';
-    div.innerHTML = '<input type="text" class="form-control" name="course_name" placeholder="Course Name" required> <input type="text" class="form-control" name="course_section" placeholder="Section" required>';
+    div.innerHTML = '<select class="form-control" name="course_name" required>{% for course in courses %}<option value="{{ course.name }}">{{ course.name }}</option>{% endfor %}</select><select class="form-control" name="course_section" required>{% for section in sections %}<option value="{{ section.name }}">{{ section.name }}</option>{% endfor %}</select>';
     document.getElementById('courses').appendChild(div);
 }
 function addProfessor() {
     var div = document.createElement('div');
     div.className = 'input-group mb-2';
-    div.innerHTML = '<input type="text" class="form-control" name="professor_course" placeholder="Course" required> <input type="text" class="form-control" name="professor_name" placeholder="Professor Name" required>';
+    div.innerHTML = '<select class="form-control" name="professor_course" required>{% for course in courses %}<option value="{{ course.name }}">{{ course.name }}</option>{% endfor %}</select><select class="form-control" name="professor_name" required>{% for professor in professors %}<option value="{{ professor.name }}">{{ professor.name }}</option>{% endfor %}</select>';
     document.getElementById('professors').appendChild(div);
 }
 function addTimeRequirement() {
@@ -147,7 +155,7 @@ function addTimeRequirement() {
 function addDay() {
     var div = document.createElement('div');
     div.className = 'input-group mb-2';
-    div.innerHTML = '<input type="text" class="form-control" name="day_name" placeholder="Day" required>';
+    div.innerHTML = '<select class="form-control" name="day_name" required>{% for day in days %}<option value="{{ day.name }}">{{ day.name }}</option>{% endfor %}</select>';
     document.getElementById('days').appendChild(div);
 }
 function addTimeSlot() {
