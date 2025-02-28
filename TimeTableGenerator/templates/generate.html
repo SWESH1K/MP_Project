@@ -1,9 +1,158 @@
 {% extends "base.html" %}
-
 {% block title %}
 Generate
 {% endblock %}
-
 {% block content %}
-<center><h1>Generate Page</h1></center>
+<div class="container mt-5">
+    <h1 class="text-center">Generate Page</h1>
+    <form method="post" action="{% url 'generate_timetable' %}">
+        {% csrf_token %}
+        
+        <div class="row mb-3">
+            <div class="col-md-6 border-end">
+                <label for="sections">Sections:</label>
+                <div id="sections">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" name="section_name" placeholder="Section Name" required>
+                    </div>
+                </div>
+                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addSection()">Add Section</button>
+            </div>
+            <div class="col-md-6">
+                <label for="courses">Courses:</label>
+                <div id="courses">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" name="course_name" placeholder="Course Name" required>
+                        <input type="text" class="form-control" name="course_section" placeholder="Section" required>
+                    </div>
+                </div>
+                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addCourse()">Add Course</button>
+            </div>
+        </div>
+
+        <hr class="my-4"> <!-- Separator -->
+
+        <div class="row mb-3">
+            <div class="col-md-6 border-end">
+                <label for="professors">Professors:</label>
+                <div id="professors">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" name="professor_course" placeholder="Course" required>
+                        <input type="text" class="form-control" name="professor_name" placeholder="Professor Name" required>
+                    </div>
+                </div>
+                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addProfessor()">Add Professor</button>
+            </div>
+            <div class="col-md-6">
+                <label for="course_time_requirements">Course Time Requirements:</label>
+                <div id="course_time_requirements">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" name="time_course" placeholder="Course" required>
+                        <input type="number" class="form-control" name="time_requirement" placeholder="Time Requirement" required>
+                    </div>
+                </div>
+                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addTimeRequirement()">Add Time Requirement</button>
+            </div>
+        </div>
+
+        <hr class="my-4"> <!-- Separator -->
+
+        <div class="row mb-3">
+            <div class="col-md-6 border-end">
+                <label for="days">Days:</label>
+                <div id="days">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" name="day_name" placeholder="Day" required>
+                    </div>
+                </div>
+                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addDay()">Add Day</button>
+            </div>
+            <div class="col-md-6">
+                <label for="time_slots">Time Slots:</label>
+                <div id="time_slots">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" name="time_slot" placeholder="Time Slot" required>
+                    </div>
+                </div>
+                <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addTimeSlot()">Add Time Slot</button>
+            </div>
+        </div>
+
+        <hr class="my-4"> <!-- Separator -->
+
+        <div class="row">
+            <div class="col-md-6">
+                <button style='margin-top: 10px' type="submit" class="btn btn-success">Generate Timetable</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% if timetable %}
+    <h1 class="text-center">Generated Timetable</h1>
+    {% for section, days in timetable.items %}
+    <div style='margin: 0 50px;'>
+        <h2 class="mt-4">Section {{ section }}</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Day</th>
+                    {% for time_slot in time_slots %}
+                        <th>{{ time_slot }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for day, slots in days.items %}
+                    <tr>
+                        <th>{{ day }}</th>
+                        {% for slot, course in slots.items %}
+                            <td>{{ course }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<script>
+function addSection() {
+    var div = document.createElement('div');
+    div.className = 'input-group mb-2';
+    div.innerHTML = '<input type="text" class="form-control" name="section_name" placeholder="Section Name" required>';
+    document.getElementById('sections').appendChild(div);
+}
+function addCourse() {
+    var div = document.createElement('div');
+    div.className = 'input-group mb-2';
+    div.innerHTML = '<input type="text" class="form-control" name="course_name" placeholder="Course Name" required> <input type="text" class="form-control" name="course_section" placeholder="Section" required>';
+    document.getElementById('courses').appendChild(div);
+}
+function addProfessor() {
+    var div = document.createElement('div');
+    div.className = 'input-group mb-2';
+    div.innerHTML = '<input type="text" class="form-control" name="professor_course" placeholder="Course" required> <input type="text" class="form-control" name="professor_name" placeholder="Professor Name" required>';
+    document.getElementById('professors').appendChild(div);
+}
+function addTimeRequirement() {
+    var div = document.createElement('div');
+    div.className = 'input-group mb-2';
+    div.innerHTML = '<input type="text" class="form-control" name="time_course" placeholder="Course" required> <input type="number" class="form-control" name="time_requirement" placeholder="Time Requirement" required>';
+    document.getElementById('course_time_requirements').appendChild(div);
+}
+function addDay() {
+    var div = document.createElement('div');
+    div.className = 'input-group mb-2';
+    div.innerHTML = '<input type="text" class="form-control" name="day_name" placeholder="Day" required>';
+    document.getElementById('days').appendChild(div);
+}
+function addTimeSlot() {
+    var div = document.createElement('div');
+    div.className = 'input-group mb-2';
+    div.innerHTML = '<input type="text" class="form-control" name="time_slot" placeholder="Time Slot" required>';
+    document.getElementById('time_slots').appendChild(div);
+}
+</script>
 {% endblock %}
