@@ -102,7 +102,7 @@ Generate
     <h1 class="text-center">Generated Timetable</h1>
     {% for section, days in timetable.items %}
     <div style='margin: 0 50px;'>
-        <h2 class="mt-4">Section {{ section }}</h2>
+        <h2 class="mt-4">Class {{ section }}</h2>
         <table class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr>
@@ -125,13 +125,34 @@ Generate
         </table>
     </div>
     {% endfor %}
+    <div style='margin: 0 50px;'>
+        <hr style="border-width: 2px">
+        <h5>Subject-Professor Mapping</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Subject</th>
+                    <th>Professor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subject, professor in professors.items %}
+                <tr>
+                    <td>{{ subject }}</td>
+                    <td>{{ professor }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr style='width:100%; border-width: 5px; border-color: white;border-style:dashed;' class="my-[20px]">
 {% endif %}
 
 <script>
 function addSection() {
     var div = document.createElement('div');
     div.className = 'input-group mb-2';
-    div.innerHTML = '<input type="text" class="form-control" name="section_name" placeholder="Section Name" required>';
+    div.innerHTML = '<select class="form-control" name="section_name" required>{% for section in sections %}<option value="{{ section.name }}">{{ section.name }}</option>{% endfor %}</select>';
     document.getElementById('sections').appendChild(div);
 }
 function addCourse() {

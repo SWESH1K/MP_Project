@@ -60,7 +60,7 @@ class TimetableSolver:
                 for c in self.courses[s]:
                     for t in self.time_slots:
                         if self.x[c, d, t, s].value() == 1:
-                            weekly_timetable_data[s][d][t] = f"{c} ({self.professors[c]})"
+                            weekly_timetable_data[s][d][t] = f"{c}"
 
         return weekly_timetable_data
 

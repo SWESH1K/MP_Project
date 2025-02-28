@@ -27,10 +27,9 @@ def generate(request):
             professors[course] = name
         
         course_time_requirements = {}
-        time_courses = request.POST.getlist('time_course')
-        time_requirements = request.POST.getlist('time_requirement')
-        for course, requirement in zip(time_courses, time_requirements):
-            course_time_requirements[course] = int(requirement)
+        for course in course_names:
+            subject = Subject.objects.get(name=course)
+            course_time_requirements[course] = subject.classes_per_week
         
         days = request.POST.getlist('day_name')
         time_slots = request.POST.getlist('time_slot')
@@ -41,7 +40,7 @@ def generate(request):
         solver.solve()
         timetable = solver.get_weekly_timetable()
 
-        return render(request, 'generate.html', {'timetable': timetable, 'time_slots': time_slots})
+        return render(request, 'generate.html', {'timetable': timetable, 'time_slots': time_slots, 'professors': professors})
 
     sections = Class.objects.all()
     courses = Subject.objects.all()
