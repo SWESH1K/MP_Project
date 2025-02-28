@@ -5,6 +5,7 @@ Generate
 {% block content %}
 <div class="container mt-5">
     <h1 class="text-center">Generate Page</h1>
+    <hr class="my-4" style='border-width: 5px'> <!-- Separator -->
     <form method="post" action="{% url 'generate_timetable' %}">
         {% csrf_token %}
         
@@ -30,7 +31,7 @@ Generate
             </div>
         </div>
 
-        <hr class="my-4"> <!-- Separator -->
+        <hr class="my-4" style='border-width: 5px'> <!-- Separator -->
 
         <div class="row mb-3">
             <div class="col-md-6 border-end">
@@ -55,7 +56,7 @@ Generate
             </div>
         </div>
 
-        <hr class="my-4"> <!-- Separator -->
+        <hr class="my-4" style='border-width: 5px'> <!-- Separator -->
 
         <div class="row mb-3">
             <div class="col-md-6 border-end">
@@ -78,7 +79,7 @@ Generate
             </div>
         </div>
 
-        <hr class="my-4"> <!-- Separator -->
+        <hr class="my-4" style='border-width: 5px'> <!-- Separator -->
 
         <div class="row">
             <div class="col-md-6">
@@ -89,6 +90,7 @@ Generate
 </div>
 
 {% if timetable %}
+    <hr style='width:100%; border-width: 5px; border-color: white;border-style:dashed;' class="my-[20px]">
     <h1 class="text-center">Generated Timetable</h1>
     {% for section, days in timetable.items %}
     <div style='margin: 0 50px;'>
