@@ -86,7 +86,11 @@ Generate
                 <label for="time_slots">Time Slots:</label>
                 <div id="time_slots">
                     <div class="input-group mb-2">
-                        <input type="text" class="form-control" name="time_slot" placeholder="Time Slot" required>
+                        <select class="form-control" name="time_slot" required>
+                            {% for slot in time_slots %}
+                                <option value="{{ slot.name}}">{{ slot.name }}</option>
+                            {% endfor %}
+                        </select>                    
                     </div>
                 </div>
                 <button style='margin-top: 10px' type="button" class="btn btn-primary" onclick="addTimeSlot()">Add Time Slot</button>
@@ -182,7 +186,7 @@ function addDay() {
 function addTimeSlot() {
     var div = document.createElement('div');
     div.className = 'input-group mb-2';
-    div.innerHTML = '<input type="text" class="form-control" name="time_slot" placeholder="Time Slot" required>';
+    div.innerHTML = '<select class="form-control" name="time_slot" required>{% for slot in time_slots %}<option value="{{ slot.name}}">{{ slot.name }}</option>{% endfor %}</select>   ';
     document.getElementById('time_slots').appendChild(div);
 }
 </script>

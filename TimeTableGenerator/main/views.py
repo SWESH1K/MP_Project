@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Class, Subject, Faculty, Weekday
+from .models import Class, Subject, Faculty, Weekday, TimeSlot
 from .solver import TimetableSolver
 import json
 
@@ -46,10 +46,12 @@ def generate(request):
     courses = Subject.objects.all()
     professors = Faculty.objects.all()
     days = Weekday.objects.all()
+    time_slots = TimeSlot.objects.all()
 
     return render(request, 'generate.html', {
         'sections': sections,
         'courses': courses,
         'professors': professors,
-        'days': days
+        'days': days,
+        'time_slots': time_slots,
     })
